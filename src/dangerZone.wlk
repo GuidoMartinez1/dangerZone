@@ -3,22 +3,37 @@
 class Empleado {
 	
 	var property salud = 100
+	const habilidades = []
+	var puesto
 	
-	method saludCritica()
+	method saludCritica() = puesto.saludCritica()
 	
 	method estaIncapacitado() = salud < self.saludCritica()
 	
-}
-
-class Espia inherits Empleado {
+	method puedeUsar(habilidad) = not self.estaIncapacitado() and self.tiene(habilidad)
 	
-	override method saludCritica() = 15
+	method tiene(habilidad) = habilidades.contains(habilidad) 
 }
 
-class Oficinista inherits Empleado {
+class Jefe inherits Empleado {
+	const subordinados = []
+	
+	override method puedeUsar(habilidad) = super(habilidad) or self.algunoDeLosSubordinadosLaPuedeUsar(habilidad)
+	
+	method algunoDeLosSubordinadosLaPuedeUsar(habilidad) = subordinados.any({subordinado => subordinado.puedeUsar(habilidad)})
+	
+}
+
+
+object puestoEspia  {
+	
+	 method saludCritica() = 15
+}
+
+class PuestoOficinista  {
 	
 	var property cantidadEstrellas
 	
-	override method saludCritica() = 40 - 5 * cantidadEstrellas
+	 method saludCritica() = 40 - 5 * cantidadEstrellas
 	
 }
